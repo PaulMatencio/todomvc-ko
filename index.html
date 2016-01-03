@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en" data-framework="knockoutjs">
+	<head>
+		<meta charset="utf-8">
+		<title>Knockout.js • TodoMVC</title>
+		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+	</head>
+	<body>
+		<section id="todoapp">
+
+			<header id="header">
+				<h1>todos</h1>
+				<input id="new-todo" data-bind="value: current, valueUpdate: 'afterkeydown', enterKey: add" placeholder="What needs to be done?" autofocus>
+			</header>
+			 <!--  data-bind: visible => show the main section if todos.length > 0   -->
+			<section id="main" data-bind="visible: todos().length"> 
+				<!--  data-bind= checked => if checked executed allcompleted()  function-->
+				<input id="toggle-all" data-bind="checked: allCompleted" type="checkbox">
+				<label for="toggle-all">Mark all as complete</label>
+
+				<ul id="todo-list" data-bind="foreach: filteredTodos">                <!-- filteredTodos is an observablearray -->
+					<li data-bind="css: { completed:completed,editing:editing,priority:priority()>0,priority_h:priority()>1}">  <!-- add/remove css if condition -->
+						<div class="view">
+							<!--input class="toggle" data-bind="checked: completed, click: $root.complete" type="checkbox"--> <!-- if checked => execute completed -->
+
+							<!-- the checked binding link a checkable form control -->
+							<input class="toggle" data-bind="checked: completed" type="checkbox">
+							<!--label data-bind="text: title, event: { dblclick: $root.editItem }"></label-->
+							<label data-bind="text: title, event: { dblclick: $root.editItem }"></label>
+							<!--em data-bind="if: completed"> --fait </em--> 
+							<button class="destroy" data-bind="click: $root.remove"></button>
+							<button class="edit-btn" data-bind="click: $root.editItem"></button>
+							<button class="priority-btn" data-bind="click: $root.setPriority"></button>
+						</div>
+
+						<input class="edit" data-bind="value: title, valueUpdate: 'afterkeydown', enterKey: $root.saveEditing, escapeKey: $root.cancelEditing, selectAndFocus: editing, event: { blur: $root.saveEditing }">
+					</li>
+				</ul>
+			</section>
+			<!-- display the footer whenever completedCount, remainingCount or removedCount is > 0 -->
+			<footer id="footer" data-bind="visible: completedCount() || remainingCount() || removedCount()">
+				<span id="todo-count">
+					<strong data-bind="text: remainingCount">0</strong>
+					<span data-bind="text: getLabel(remainingCount)"></span> left
+				</span>
+				<ul id="filters">
+					<li>
+						<a data-bind="css: { selected: showMode() == 'all' }" href="#/all">All</a>
+					</li>
+					<li>
+						<a data-bind="css: { selected: showMode() == 'active' }" href="#/active">Active</a>
+					</li>
+					<li>
+						<a data-bind="css: { selected: showMode() == 'completed' }" href="#/completed">Completed</a>
+					</li>
+					<li>
+						<a data-bind="css: { selected: showMode() == 'priority' }" href="#/priority">Priority</a>
+					</li>
+				</ul>
+				<button id="clear-completed" data-bind="visible: completedCount, click: removeCompleted">Clear completed</button>
+				<!-- display the undo button when the remoceCount is > 0  -->
+				<button id="undo" data-bind="visible: removedCount, click: undo">Undo</button>
+			</footer>
+
+		</section>
+		<footer id="info">
+			<!--p>Double-click to edit a todo</p-->
+			<p>Enhanced by <a href="https://github.com/ashish01/knockoutjs-todos">Paul Matencio</a>
+			<p> Originally written by <a href="https://github.com/ashish01/knockoutjs-todos">Ashish Sharma</a> and <a href="http://knockmeout.net">Ryan Niemeyer</a></p>
+			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+			<p>Click the priority button ! to raise todo priority</p>
+		</footer>
+		<script src="node_modules/todomvc-common/base.js"></script>
+		<script src="node_modules/knockout/build/output/knockout-latest.js"></script>
+		<script src="node_modules/director/build/director.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>
